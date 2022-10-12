@@ -1,10 +1,6 @@
 import { galleryItems } from "./gallery-items.js";
 
-//console.log(galleryItems);
-
 const galleryRef = document.querySelector(".gallery");
-
-//const { preview, original, description } = galleryItems;
 
 const galleryMarkup = createGalleryMarkup();
 
@@ -37,25 +33,37 @@ function onImageClick(evt) {
 		return;
 	}
 
-	//console.log(evt.target.dataset.source);
+	const options = {
+		onShow: instance => {
+			galleryRef.addEventListener("keydown", evt => {
+				if (evt.code === "Escape") {
+					return instance.close();
+				}
+			});
+		},
+		onClose: instance => {
+			galleryRef.removeEventListener("keydown", evt => {
+				if (evt.code === "Escape") {
+					return instance.close();
+				}
+			});
+		},
+	};
 
-	const instance = basicLightbox.create(`
-    <img src="${evt.target.dataset.source}" width="800" height="600">
-`);
+	const instance = basicLightbox.create(`<img src="${evt.target.dataset.source}" width="800" height="600">`, options);
 
 	instance.show();
-
-	galleryRef.addEventListener("keydown", (evt) => {
-		if (evt.code === "Escape") {
-			instance.close();
-		}
-	});
-
-
-	// const currentActiveCard = document.querySelector('.color-card.is-active')
-	// if (currentActiveCard) {
-	//   currentActiveCard.classList.remove('is-active')
-	// }
 }
 
+// instance.show();
 
+// galleryRef.addEventListener("keydown", (evt) => {
+// 	if (evt.code === "Escape") {
+// 		instance.close();
+// 	}
+// });
+
+// const currentActiveCard = document.querySelector('.color-card.is-active')
+// if (currentActiveCard) {
+//   currentActiveCard.classList.remove('is-active')
+// }
